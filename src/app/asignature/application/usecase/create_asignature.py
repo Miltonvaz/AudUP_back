@@ -6,7 +6,7 @@ class CreateAsignature():
     def __init__(self, repo: AsignatureRepository):
         self.repo = repo
 
-    def execute(self, asignature: CreateAsignatureModel) -> CreateResponse:
-        result = self.repo.create(asignature)
+    def execute(self, asignature: CreateAsignatureModel, user_id : int) -> CreateResponse:
+        result = self.repo.create(asignature, user_id)
 
         return CreateResponse(name=result.name, description=result.description)

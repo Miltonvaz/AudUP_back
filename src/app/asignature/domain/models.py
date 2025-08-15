@@ -2,7 +2,6 @@ from pydantic import BaseModel, field_validator, ValidationInfo
 
 
 class CreateAsignatureModel(BaseModel):
-    idTeacher: int
     name: str
     description: str
 

@@ -12,9 +12,13 @@ class PostgreSQLRepository(AsignatureRepository):
             print("Hay error")
             return None
 
-    def create(self, asignature: Asignature):
+    def create(self, asignature: Asignature,user_id: int):
 
-        new_asignature = Asignature(**asignature.dict())
+        new_asignature = Asignature(
+            name = asignature.name,
+            description = asignature.description,
+            idTeacher = user_id
+        )
 
         self.connection.add(new_asignature)
 

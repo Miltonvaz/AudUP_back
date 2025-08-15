@@ -1,22 +1,15 @@
-from fastapi import APIRouter, HTTPException, status
-from src.app.asignature.infrastructure.db.postgresSQL import PostgreSQLRepository
-from src.app.asignature.application.usecase.create_asignature import CreateAsignature
+from fastapi import APIRouter, Depends
 from src.app.asignature.domain.models import CreateAsignatureModel
+from src.app.asignature.infrastructure.dependencies.dependencies import init_asignature_dependencies
+from src.shared.security.jwt_middleware import jwt_middleware
+from src.shared.security.auth import Claims
 
 asignature_router = APIRouter()
+controllers = init_asignature_dependencies()
 
-@asignature_router.post("/asignature", status_code=status.HTTP_201_CREATED)
-def create_asignature(asignature: CreateAsignatureModel):
-    repo = PostgreSQLRepository()
-
-    if repo.is_name_taken(asignature.name):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="There is already a subject with that name"
-        )
-
-    try:
-        use_case = CreateAsignature(repo)
-        return use_case.execute(asignature)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+@asignature_router.post("/asignature", status_code=201)
+def create_asignature(
+    asignature: CreateAsignatureModel,
+    claims: Claims = Depends(jwt_middleware)  
+):
+    return controllers["create_asignature_controller"].execute(asignature, claims)
