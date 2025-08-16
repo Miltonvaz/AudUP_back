@@ -21,7 +21,6 @@ class PostgreSQLRepository(UserRepository):
             self.connection.refresh(new_user)
             return new_user
         except IntegrityError as e:
-            # Si falla por UNIQUE u otra violación de integridad
             self.connection.rollback()
             if 'User_email_key' in str(e.orig):
                 raise HTTPException(

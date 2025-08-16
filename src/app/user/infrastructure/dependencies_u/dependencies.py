@@ -1,7 +1,7 @@
 from src.app.user.infrastructure.db.postgresSQL import PostgreSQLRepository
 from src.app.user.application.use_case.create_user import CreateUser
 from src.app.user.application.use_case.getById_user import GetUserById
-from src.app.user.application.use_case.getAll_user import GetAllUser  # <-- Use Case corregido
+from src.app.user.application.use_case.getAll_user import GetAllUser  
 from src.app.user.application.use_case.getByEmail import GetUserByEmail
 from src.app.user.application.use_case.update_user import UpdateUser
 from src.app.user.application.use_case.delete_user import DeleteUser
