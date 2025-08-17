@@ -5,3 +5,5 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
+credentials.json
+token.pickle
