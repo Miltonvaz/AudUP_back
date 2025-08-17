@@ -22,6 +22,7 @@ class User(Base):
     secondName = Column(String(255))
     paternalLastName = Column(String(255), nullable=False)
     maternalLastName = Column(String(255))
+    urlProfile = Column(Text)
     email = Column(String(320), unique=True, nullable=False)
     passwordHash = Column(String(255), nullable=False)
     created_at = Column("createdAt", TIMESTAMP(timezone=True), server_default=text("now()"))
@@ -50,6 +51,7 @@ class Asignature(Base):
     name = Column(String(255), nullable=False)
     description = Column(String(500))
     created_at = Column("createdAt", TIMESTAMP(timezone=True), server_default=text("now()"))
+    linkCode = Column(String(8),nullable = False,unique=True)
 
     # Relaciones
     teacher = relationship("User", back_populates="asignatures", foreign_keys=[idTeacher])
@@ -92,7 +94,7 @@ class Material(Base):
     idClass = Column(BigInteger, ForeignKey("Class.idClass"), nullable=False)
     title = Column(String(255), nullable=False)
     description = Column(String(500))
-    field = Column(String(500))
+    urlFile = Column(Text, nullable=False)
 
     class_ = relationship("Class", back_populates="materials")
 
