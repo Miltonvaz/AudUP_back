@@ -48,6 +48,7 @@ class Asignature(Base):
     idAsignature = Column(BigInteger, primary_key=True, autoincrement=True)
     idTeacher = Column(BigInteger, ForeignKey("User.idUser"), nullable=False)
     idAdvertisement = Column(BigInteger, ForeignKey("Advertisement.idAdvertisement"))
+    urlBackground = Column(Text)
     name = Column(String(255), nullable=False)
     description = Column(String(500))
     created_at = Column("createdAt", TIMESTAMP(timezone=True), server_default=text("now()"))
