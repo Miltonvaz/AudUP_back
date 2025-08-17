@@ -51,7 +51,7 @@ class Asignature(Base):
     name = Column(String(255), nullable=False)
     description = Column(String(500))
     created_at = Column("createdAt", TIMESTAMP(timezone=True), server_default=text("now()"))
-    linkCode = Column(String(8),nullable = False,unique=True)
+    linkCode = Column(String(8),nullable = False,unique=True, server_default=text("generate_uuid8()"))
 
     # Relaciones
     teacher = relationship("User", back_populates="asignatures", foreign_keys=[idTeacher])
