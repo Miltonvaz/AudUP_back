@@ -7,6 +7,9 @@ class CreateAsignature():
         self.repo = repo
 
     def execute(self, asignature: CreateAsignatureRequest, user_id : int) -> CreateAsignatureResponse:
+        if self.repo.is_name_taken(asignature.name):
+            raise ValueError("The subject name already exists")
+            
         result = self.repo.create(asignature, user_id)
 
         return CreateAsignatureResponse(name=result.name, description=result.description)
