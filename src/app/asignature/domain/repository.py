@@ -18,3 +18,11 @@ class AsignatureRepository(ABC):
     @abstractmethod
     def update(self, asignature: CreateAsignatureRequest, user_id: int, asignature_id: int) -> CreateAsignatureResponse:
         pass
+
+    @abstractmethod
+    def exists_asignature(self, user_id: int, asignature_id: int) -> bool:
+        pass
+
+    @abstractmethod
+    def delete(self, user_id: int, asignature_id: int)->bool:
+        pass

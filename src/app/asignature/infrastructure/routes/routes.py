@@ -30,3 +30,9 @@ def update_asignature(
     claims: Claims = Depends(jwt_middleware)
 ):
     return controllers["update_asignature_controller"].execute(asignature_id,asignature,claims)
+@asignature_router.delete("/asignature/{asignature_id}",status_code=200)
+def delete_asignature(
+    asignature_id : int,
+    claims: Claims = Depends(jwt_middleware)
+):
+    return controllers["delete_asignature_controller"].execute(claims,asignature_id)

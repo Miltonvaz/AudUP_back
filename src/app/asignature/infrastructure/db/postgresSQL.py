@@ -76,3 +76,33 @@ class PostgreSQLRepository(AsignatureRepository):
         except Exception as e:
             self.connection.rollback()
             raise e
+
+    def exists_asignature(self, user_id, asignature_id) -> bool:
+        try:
+            return self.connection.query(Asignature).filter(
+                Asignature.idAsignature == asignature_id,
+                Asignature.idTeacher == user_id
+            ).first() is not None
+        except Exception as e:
+            raise e
+
+    def delete(self, user_id, asignature_id) -> bool:
+        try:
+            asignature = (
+                self.connection.query(Asignature)
+                .filter(
+                    Asignature.idTeacher == user_id,
+                    Asignature.idAsignature == asignature_id
+                )
+                .first()
+            )
+            
+            if not asignature:
+                return False
+        
+            self.connection.delete(asignature)
+            self.connection.commit()
+            return True
+        
+        except Exception as e:
+            raise e
