@@ -1,23 +1,29 @@
 from pydantic import BaseModel, field_validator, ValidationInfo
 
-
-class CreateAsignatureModel(BaseModel):
+# Modelo que llega en el body
+class CreateAsignatureRequest(BaseModel):
     name: str
     description: str
 
     @field_validator('name')
     def name_must_not_be_empty(cls, value, info: ValidationInfo):
-        if not value:
+        if not value.strip():
             raise ValueError("Name cannot be empty")
         return value
 
     @field_validator('description')
     def description_must_not_be_empty(cls, value, info: ValidationInfo):
-        if not value:
+        if not value.strip():
             raise ValueError("Description cannot be empty")
         return value
 
 
-class CreateResponse(BaseModel):
+# Modelo que ya se usa en la capa de aplicación/repositorio (incluye idUser)
+class CreateAsignature(CreateAsignatureRequest):
+    idUser: int
+
+
+# Modelo de respuesta
+class CreateAsignatureResponse(BaseModel):
     name: str
     description: str
