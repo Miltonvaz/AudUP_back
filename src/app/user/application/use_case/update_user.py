@@ -25,5 +25,6 @@ class UpdateUser:
             paternalLastName=updated_user.paternalLastName,
             maternalLastName=updated_user.maternalLastName,
             email=updated_user.email,
+             urlProfile=updated_user.urlProfile,
             createdAt=updated_user.created_at.isoformat()  
         )
