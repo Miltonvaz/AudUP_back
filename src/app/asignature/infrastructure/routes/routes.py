@@ -43,3 +43,10 @@ def join_asignature(
     claims : Claims = Depends(jwt_middleware)
 ):
     return controllers["join_asignature_controller"].execute(claims,asignature_id)
+
+@asignature_router.get("/asignature/{asignature_id}",status_code=200)
+def get_students(
+    asignature_id : int,
+    claims : Claims = Depends(jwt_middleware)
+):
+    return controllers["get_students_controller"].execute(claims,asignature_id)

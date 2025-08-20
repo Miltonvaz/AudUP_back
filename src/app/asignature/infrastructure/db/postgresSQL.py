@@ -1,10 +1,11 @@
 from datetime import datetime
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import NoResultFound
 
 from src.shared.db.database import get_db
 from src.app.asignature.domain.repository import AsignatureRepository
-from src.shared.db.orm_models import Asignature, UserAsignature
-from src.app.asignature.domain.models import CreateAsignature
+from src.shared.db.orm_models import Asignature, UserAsignature, User
+from src.app.asignature.domain.models import CreateAsignature, UserResponse
+from typing import List
 
 
 class PostgreSQLRepository(AsignatureRepository):
@@ -159,4 +160,40 @@ class PostgreSQLRepository(AsignatureRepository):
 
         except Exception as e:
             self.connection.rollback()
+            raise e
+
+    def get_students(self, user_id : int,asignature_id: int) -> List[UserResponse]:
+        try:
+            # Verificar que la asignatura pertenece al profesor
+            asignature = (
+                self.connection.query(Asignature)
+                .filter_by(idAsignature=asignature_id, idTeacher=user_id)  
+                .one()
+            )
+
+            # Traer a los estudiantes inscritos en esa asignatura
+            students = (
+                self.connection.query(User)
+                .join(UserAsignature, User.idUser == UserAsignature.idUser)
+                .filter(
+                    UserAsignature.idAsignature == asignature.idAsignature,
+                    UserAsignature.isActive == True
+                )
+                .all()
+            )
+
+            return [
+                UserResponse(
+                    firstName=student.firstName,
+                    secondName=student.secondName,
+                    paternalLastName=student.paternalLastName,
+                    maternalLastName=student.maternalLastName,
+                    email=student.email
+                )
+                for student in students
+            ]
+
+        except NoResultFound:
+            raise Exception("This subject does not belong to this teacher")
+        except Exception as e:
             raise e

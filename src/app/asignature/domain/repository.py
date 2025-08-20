@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from src.app.asignature.domain.models import CreateAsignatureRequest, CreateAsignatureResponse
+from src.app.asignature.domain.models import CreateAsignatureRequest, CreateAsignatureResponse, UserResponse
+from typing import List
 
 
 class AsignatureRepository(ABC):
@@ -28,4 +29,7 @@ class AsignatureRepository(ABC):
         pass
     @abstractmethod
     def join_asignature(self,user_id, asignature_id)->bool:
+        pass
+    @abstractmethod
+    def get_students(self,user_id: int, asignature_id: int)->List[UserResponse]:
         pass

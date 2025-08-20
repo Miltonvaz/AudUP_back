@@ -27,3 +27,10 @@ class CreateAsignature(CreateAsignatureRequest):
 class CreateAsignatureResponse(BaseModel):
     name: str
     description: str
+
+class UserResponse(BaseModel):
+    firstName: str
+    secondName: str
+    paternalLastName: str
+    maternalLastName: str
+    email: str
