@@ -36,3 +36,10 @@ def delete_asignature(
     claims: Claims = Depends(jwt_middleware)
 ):
     return controllers["delete_asignature_controller"].execute(claims,asignature_id)
+
+@asignature_router.post("/asignature/{asignature_id}/join", status_code=204)
+def join_asignature(
+    asignature_id : int,
+    claims : Claims = Depends(jwt_middleware)
+):
+    return controllers["join_asignature_controller"].execute(claims,asignature_id)

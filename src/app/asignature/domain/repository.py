@@ -26,3 +26,6 @@ class AsignatureRepository(ABC):
     @abstractmethod
     def delete(self, user_id: int, asignature_id: int)->bool:
         pass
+    @abstractmethod
+    def join_asignature(self,user_id, asignature_id)->bool:
+        pass
