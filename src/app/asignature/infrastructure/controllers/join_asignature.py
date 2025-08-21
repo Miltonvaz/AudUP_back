@@ -1,19 +1,39 @@
-from src.app.asignature.application.usecase.join_asignature import JoinAsignature
+from fastapi import HTTPException, status
+from fastapi.responses import JSONResponse
 from src.shared.security.auth import Claims
-from fastapi import HTTPException
+from src.app.asignature.application.usecase.join_asignature import JoinAsignature
 
 
-class JoinAsignatureController():
-    def __init__(self,  usecase : JoinAsignature):
+class JoinAsignatureController:
+    def __init__(self, usecase: JoinAsignature):
         self.usecase = usecase
     
-    def execute(self, claims : Claims, asignature_id: int)->bool:
+    def execute(self, claims: Claims, asignature_id: int):
+        user_id = claims.user_id
+        
+        if getattr(claims, "role", None) != "student":
+            raise HTTPException(status_code=403, detail="Only students allowed")
+        
         try:
-            user_id = claims.user_id
-            
-            if getattr(claims, "role", None) != "student":
-                raise HTTPException(status_code=403, detail="Only students allowed")
-            
-            return self.usecase.execute(user_id,asignature_id)
+            result = self.usecase.execute(user_id, asignature_id)
+
+            if result == "created":
+                return JSONResponse(
+                    status_code=status.HTTP_200_OK,
+                    content={"message": "Asignature joined successfully"}
+                )
+            elif result == "reactivated":
+                return JSONResponse(
+                    status_code=status.HTTP_200_OK,
+                    content={"message": "Asignature reactivated successfully"}
+                )
+            elif result == "exists":
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="User already joined this asignature"
+                )
+
+        except ValueError as ve:
+            raise HTTPException(status_code=400, detail=str(ve))
         except Exception as e:
             raise e
