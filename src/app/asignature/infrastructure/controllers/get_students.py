@@ -18,7 +18,7 @@ class GetStudentsController():
             if getattr(claims, "role", None) != "teacher":
                 raise HTTPException(status_code=403, detail="Access prohibited. Teachers only.")
             
-            return self.usecase.repo.get_students(user_id,asignature_id)
+            return self.usecase.execute(user_id,asignature_id)
         
         except Exception as e:
             raise e
