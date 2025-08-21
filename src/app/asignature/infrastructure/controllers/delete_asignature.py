@@ -1,6 +1,7 @@
 from src.app.asignature.application.usecase.delete_asignature import DeleteAsignature
 from src.shared.security.auth import Claims
 from fastapi import HTTPException
+from fastapi.responses import JSONResponse
 
 class DeleteAsignatureController:
     def __init__(self, usecase: DeleteAsignature):
@@ -16,13 +17,11 @@ class DeleteAsignatureController:
             )
 
         try:
-            deleted = self.usecase.execute(user_id, asignature_id)
+            if self.usecase.execute(user_id, asignature_id):
+                return JSONResponse(status_code=200, content={"detail: ": "Asignature deleted successfully"})
+        except ValueError as ve:
+            raise HTTPException(status_code=404, detail=str(ve))
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
-        if not deleted:
-            raise HTTPException(
-                status_code=404, detail="Asignature not found"
-            )
-
-        return {"message": f"Asignature deleted successfully"}
+        
