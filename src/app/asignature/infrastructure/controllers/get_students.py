@@ -3,6 +3,7 @@ from typing import List
 from src.app.asignature.domain.models import UserResponse
 from src.shared.security.auth import Claims
 from fastapi import HTTPException
+from fastapi.responses import JSONResponse
 
 
 
@@ -18,8 +19,11 @@ class GetStudentsController():
             if getattr(claims, "role", None) != "teacher":
                 raise HTTPException(status_code=403, detail="Access prohibited. Teachers only.")
             
-            return self.usecase.execute(user_id,asignature_id)
-        
+            result = self.usecase.execute(user_id,asignature_id)
+            if result:
+                return JSONResponse(status_code=200, content=[item.dict() for item in result])
+        except ValueError as ve:
+            raise HTTPException(status_code=404,detail=str(ve))
         except Exception as e:
             raise e
             
