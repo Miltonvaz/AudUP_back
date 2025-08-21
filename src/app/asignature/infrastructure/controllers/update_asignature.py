@@ -14,7 +14,7 @@ class UpdateAsignatureController():
             if getattr(claims, "role", None) != "teacher":
                 raise HTTPException(status_code=403, detail="Access prohibited. Teachers only.")
             
-            return self.usecase.repo.update(asignature,user_id,asignature_id)
+            return self.usecase.execute(asignature,user_id,asignature_id)
     
         except HTTPException:
             raise  # dejar pasar las excepciones que ya definimos

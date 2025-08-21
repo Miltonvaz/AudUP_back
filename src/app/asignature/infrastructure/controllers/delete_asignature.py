@@ -16,7 +16,7 @@ class DeleteAsignatureController:
             )
 
         try:
-            deleted = self.usecase.repo.delete(user_id, asignature_id)
+            deleted = self.usecase.execute(user_id, asignature_id)
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
