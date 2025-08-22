@@ -2,6 +2,7 @@ from src.app.asignature.application.usecase.update_asignature import UpdateAsign
 from src.app.asignature.domain.models import CreateAsignatureRequest, CreateAsignatureResponse
 from src.shared.security.auth import Claims
 from fastapi import HTTPException
+from fastapi.responses import JSONResponse
 
 class UpdateAsignatureController():
     def __init__(self, usecase: UpdateAsignature):
@@ -14,13 +15,15 @@ class UpdateAsignatureController():
             if getattr(claims, "role", None) != "teacher":
                 raise HTTPException(status_code=403, detail="Access prohibited. Teachers only.")
             
-            return self.usecase.execute(asignature,user_id,asignature_id)
-    
-        except HTTPException:
-            raise  # dejar pasar las excepciones que ya definimos
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            result = self.usecase.execute(asignature,user_id,asignature_id)
             
+            if result:
+                return JSONResponse(status_code=200,content=result.dict())
+    
+        except ValueError as ve:
+            raise HTTPException(status_code=400, detail= str(ve))
+        except HTTPException as e:
+            raise e
             
 
             
