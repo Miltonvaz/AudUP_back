@@ -1,7 +1,7 @@
 from src.app.asignature.application.usecase.get_asignatures import GetAsignatures
 from src.shared.security.auth import Claims
 from fastapi import HTTPException
-
+from fastapi.responses import JSONResponse
 
 
 class GetAsignaturesController():
@@ -15,7 +15,10 @@ class GetAsignaturesController():
             if getattr(claims,"role",None) != "teacher":
                 raise HTTPException(status_code=403, detail="Access prohibited. Teachers only.")
             
-            return self.usecase.execute(user_id)
+            result = self.usecase.execute(user_id)
+            
+            if result:
+                return JSONResponse(status_code=200, content=[item.dict() for item in result])
             
             
         except Exception as e:
