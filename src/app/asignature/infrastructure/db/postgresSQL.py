@@ -227,3 +227,25 @@ class PostgreSQLRepository(AsignatureRepository):
 
         except Exception as e:
             raise e
+    def student_withdraw_from_class(self, user_id: int, asignature_id: int)-> str:
+        try:
+            existing = (
+                self.connection.query(UserAsignature)
+                .filter_by(idUser=user_id, idAsignature=asignature_id)
+                .first()
+            )
+
+            if not existing:
+                return "not_found"  
+
+            if not existing.isActive:
+                return "already_inactive" 
+
+            
+            existing.isActive = False
+            self.connection.commit()
+            return "withdrawn"
+
+        except Exception as e:
+            self.connection.rollback()
+            raise e

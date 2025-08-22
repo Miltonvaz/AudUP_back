@@ -56,3 +56,10 @@ def get_asignatures(
     claims: Claims = Depends(jwt_middleware)
 ):
     return controllers["get_asignatures_controller"].execute(claims)
+
+@asignature_router.put("/asignature/{asignature_id}/withdraw")
+def student_withdraw_from_class(
+    asignature_id: int,
+    claims : Claims = Depends(jwt_middleware)
+):
+    return controllers["student_withdraw_from_class"].execute(claims, asignature_id)

@@ -33,5 +33,9 @@ class AsignatureRepository(ABC):
     @abstractmethod
     def get_students(self,user_id: int, asignature_id: int)->List[UserResponse]:
         pass
+    @abstractmethod
     def get_asignatures(self, user_id: int)->List[CreateAsignatureResponse]:
+        pass
+    @abstractmethod
+    def student_withdraw_from_class(self,user_id: int, asignature :int)->str:
         pass
