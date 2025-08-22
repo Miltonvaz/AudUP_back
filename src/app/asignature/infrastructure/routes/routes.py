@@ -44,14 +44,14 @@ def join_asignature(
 ):
     return controllers["join_asignature_controller"].execute(claims,asignature_id)
 
-@asignature_router.get("/asignature/{asignature_id}",status_code=200)
+@asignature_router.get("/asignature/{asignature_id}")
 def get_students(
     asignature_id : int,
     claims : Claims = Depends(jwt_middleware)
 ):
     return controllers["get_students_controller"].execute(claims,asignature_id)
 
-@asignature_router.get("/asignature",status_code=200)
+@asignature_router.get("/asignature")
 def get_asignatures(
     claims: Claims = Depends(jwt_middleware)
 ):
