@@ -1,4 +1,6 @@
 from pydantic import BaseModel, field_validator, ValidationInfo
+from typing import Optional
+
 
 # Modelo que llega en el body
 class CreateAsignatureRequest(BaseModel):
@@ -34,3 +36,14 @@ class UserResponse(BaseModel):
     paternalLastName: str
     maternalLastName: str
     email: str
+ 
+class TeacherAsignatureResponse(BaseModel):
+    asignatureName: str
+    description: str
+    urlBackground: Optional[str] = None
+    linkCode : str
+    firstName : str
+    paternalLastName : str
+    
+    
+    

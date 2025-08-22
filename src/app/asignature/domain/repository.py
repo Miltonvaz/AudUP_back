@@ -28,8 +28,10 @@ class AsignatureRepository(ABC):
     def delete(self, user_id: int, asignature_id: int)->bool:
         pass
     @abstractmethod
-    def join_asignature(self,user_id, asignature_id)->bool:
+    def join_asignature(self,user_id, asignature_id)->str:
         pass
     @abstractmethod
     def get_students(self,user_id: int, asignature_id: int)->List[UserResponse]:
+        pass
+    def get_asignatures(self, user_id: int)->List[CreateAsignatureResponse]:
         pass
