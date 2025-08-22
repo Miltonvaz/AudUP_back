@@ -4,7 +4,7 @@ from sqlalchemy.exc import NoResultFound
 from src.shared.db.database import get_db
 from src.app.asignature.domain.repository import AsignatureRepository
 from src.shared.db.orm_models import Asignature, UserAsignature, User
-from src.app.asignature.domain.models import CreateAsignature, UserResponse
+from src.app.asignature.domain.models import CreateAsignature, UserResponse, TeacherAsignatureResponse
 from typing import List
 
 
@@ -127,9 +127,8 @@ class PostgreSQLRepository(AsignatureRepository):
             self.connection.rollback()
             raise e
 
-    def join_asignature(self, user_id, asignature_id) -> bool:
+    def join_asignature(self, user_id, asignature_id) -> str:
         try:
-            # Verificar si ya existe una relación
             existing = (
                 self.connection.query(UserAsignature)
                 .filter_by(idUser=user_id, idAsignature=asignature_id)
@@ -138,13 +137,13 @@ class PostgreSQLRepository(AsignatureRepository):
 
             if existing:
                 if existing.isActive:
-                    return False
+                    return "exists"
 
                 # Reactivar inscripción si estaba desactivada
                 existing.isActive = True
                 existing.enrolledAt = datetime.now()
                 self.connection.commit()
-                return True
+                return "reactivated"
 
             # Crear nueva inscripción
             new_enrollment = UserAsignature(
@@ -155,7 +154,7 @@ class PostgreSQLRepository(AsignatureRepository):
             self.connection.commit()
             self.connection.refresh(new_enrollment)
 
-            return True
+            return "created"
 
 
         except Exception as e:
@@ -195,5 +194,36 @@ class PostgreSQLRepository(AsignatureRepository):
 
         except NoResultFound:
             raise Exception("This subject does not belong to this teacher")
+        except Exception as e:
+            raise e
+        
+    def get_asignatures(self, user_id: int) -> List[TeacherAsignatureResponse]:
+        try:
+            asignatures = (
+                self.connection.query(
+                    Asignature.name,
+                    Asignature.description,
+                    Asignature.urlBackground,
+                    Asignature.linkCode,
+                    User.firstName,
+                    User.paternalLastName
+                )
+                .join(User, Asignature.idTeacher == User.idUser)
+                .filter(User.idUser == user_id)
+                .all()
+            )
+
+            return [
+                TeacherAsignatureResponse(
+                    asignatureName=row.name,
+                    description=row.description,
+                    urlBackground=row.urlBackground,
+                    linkCode=row.linkCode,
+                    firstName=row.firstName,
+                    paternalLastName=row.paternalLastName
+                )
+                for row in asignatures
+            ]
+
         except Exception as e:
             raise e
