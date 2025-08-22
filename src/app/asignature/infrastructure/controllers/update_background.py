@@ -4,6 +4,7 @@ from src.shared.utils.format_filename import generate_filename
 import os
 from src.shared.service.drive_service.drive_service import upload_file
 from src.shared.security.auth import Claims
+from fastapi.responses import JSONResponse
 
 
 class UpdateBackgroundController:
@@ -45,9 +46,12 @@ class UpdateBackgroundController:
             url = upload_file(file.filename, file_data, file.content_type)
 
             # Llamar al UseCase para actualizar URL en la DB
-            return await self.usecase.execute(asignature_id, url, user_id)
+            result = await self.usecase.execute(asignature_id, url, user_id)
+            
+            if result:
+                return  JSONResponse(status_code=200,content=result)
 
-        except HTTPException:
-            raise  # dejar pasar las excepciones que ya definimos
+        except ValueError as ev:
+            raise HTTPException(status_code=404,detail=str(ev))  # dejar pasar las excepciones que ya definimos
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise e
