@@ -27,16 +27,15 @@ class CreateUserController:
                         status_code=415,
                         detail="Tipo de archivo no soportado (solo JPG, PNG, WEBP)"
                     )
-
-                file_bytes = await profile_image.read()
-                extension = profile_image.filename.split(".")[-1].lower()
-                filename = generate_filename("profile", extension)
-
                 try:
+                    file_bytes = await profile_image.read()
+                    extension = profile_image.filename.split(".")[-1].lower()
+                    filename = generate_filename("profile", extension)
                     url = upload_file(filename, file_bytes, profile_image.content_type)
                     user.urlProfile = url
-                except Exception as e:
-                    raise HTTPException(status_code=500, detail=f"Error subiendo archivo: {str(e)}")
+                except Exception:
+                    # Si falla la subida, se ignora y se continúa
+                    pass
 
             try:
                 result = self.usecase.execute(user)

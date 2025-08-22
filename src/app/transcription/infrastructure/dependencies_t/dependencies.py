@@ -10,6 +10,7 @@ from src.app.transcription.infrastructure.controllers.getById_transcription impo
 from src.app.transcription.infrastructure.controllers.getAll_transcription import GetAllTranscriptionController
 from src.app.transcription.infrastructure.controllers.update_transcription import UpdateTranscriptionController
 from src.app.transcription.infrastructure.controllers.delete_transcription import DeleteTranscriptionController
+from src.app.transcription.infrastructure.controllers.UploadPdf import UploadPdfController  
 
 
 def init_transcription_dependencies():
@@ -26,11 +27,13 @@ def init_transcription_dependencies():
     get_all_transcriptions_controller = GetAllTranscriptionController(get_all_transcriptions_usecase)
     update_transcription_controller = UpdateTranscriptionController(update_transcription_usecase)
     delete_transcription_controller = DeleteTranscriptionController(delete_transcription_usecase)
-  
+    upload_pdf_controller = UploadPdfController(update_transcription_usecase)  
+
     return {
         "create_transcription_controller": create_transcription_controller,
         "get_transcription_by_id_controller": get_transcription_by_id_controller,
         "get_all_transcriptions_controller": get_all_transcriptions_controller,
         "update_transcription_controller": update_transcription_controller,
-        "delete_transcription_controller": delete_transcription_controller
+        "delete_transcription_controller": delete_transcription_controller,
+        "upload_pdf_controller": upload_pdf_controller  
     }

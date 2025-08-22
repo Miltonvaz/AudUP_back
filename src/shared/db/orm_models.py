@@ -107,5 +107,6 @@ class Transcription(Base):
     idClass = Column(BigInteger, ForeignKey("Class.idClass"), nullable=False)
     title = Column(String(255), nullable=False)
     content = Column(Text, nullable=False)
+    urlFile = Column(Text, nullable=True)
 
     class_ = relationship("Class", back_populates="transcriptions")

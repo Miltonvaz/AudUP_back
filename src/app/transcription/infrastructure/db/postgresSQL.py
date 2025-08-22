@@ -4,8 +4,6 @@ from src.shared.db.database import get_db
 from src.app.transcription.domain.repository import TranscriptionRepository
 from src.app.transcription.domain.entities.models import CreateTranscriptionModel
 from src.shared.db.orm_models import Transcription
-from sqlalchemy.exc import IntegrityError
-
 
 class PostgreSQLTranscriptionRepository(TranscriptionRepository):
     def __init__(self):
@@ -29,7 +27,9 @@ class PostgreSQLTranscriptionRepository(TranscriptionRepository):
             )
 
     def get_by_id(self, transcription_id: int) -> Optional[Transcription]:
-        return self.connection.query(Transcription).filter(Transcription.idTranscription == transcription_id).first()
+        return self.connection.query(Transcription).filter(
+            Transcription.idTranscription == transcription_id
+        ).first()
 
     def get_all(self) -> List[Transcription]:
         return self.connection.query(Transcription).all()
@@ -54,7 +54,9 @@ class PostgreSQLTranscriptionRepository(TranscriptionRepository):
             )
 
     def delete(self, transcription_id: int) -> bool:
-        transcription = self.connection.query(Transcription).filter(Transcription.idTranscription == transcription_id).first()
+        transcription = self.connection.query(Transcription).filter(
+            Transcription.idTranscription == transcription_id
+        ).first()
         if not transcription:
             return False
         try:
