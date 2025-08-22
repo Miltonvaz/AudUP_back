@@ -1,11 +1,11 @@
 from pydantic import BaseModel, field_validator, ValidationInfo
 from typing import Optional
 
-
 class CreateTranscriptionModel(BaseModel):
     idClass: int
     title: str
     content: str
+    urlFile: Optional[str] = None
 
     @field_validator('title')
     def title_must_not_be_empty(cls, value, info: ValidationInfo):
@@ -19,9 +19,9 @@ class CreateTranscriptionModel(BaseModel):
             raise ValueError("Content cannot be empty")
         return value
 
-
 class TranscriptionResponse(BaseModel):
     idTranscription: int
     idClass: int
     title: str
     content: str
+    urlFile: Optional[str] = None  

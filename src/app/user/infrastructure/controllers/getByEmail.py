@@ -9,9 +9,16 @@ class GetUserByEmailController:
 
     def execute(self, email: str) -> Optional[CreateUserResponse]:
         try:
+            if not email:
+                raise HTTPException(status_code=400, detail="El email es obligatorio")
+
             result = self.usecase.execute(email)
             if result is None:
-                raise HTTPException(status_code=404, detail="User not found")
+                raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
             return result
+
+        except HTTPException as he:
+            raise he
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")

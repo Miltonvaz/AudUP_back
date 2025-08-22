@@ -12,6 +12,7 @@ load_dotenv()
 SCOPES = ["https://www.googleapis.com/auth/drive.file"]
 FOLDER_ID = os.getenv("FOLDER_ID")
 
+
 def get_credentials():
     creds = None
     if os.path.exists("token.pickle"):
@@ -26,16 +27,23 @@ def get_credentials():
                 "credentials.json", SCOPES
             )
             creds = flow.run_local_server(port=0)
+
         with open("token.pickle", "wb") as token:
             pickle.dump(creds, token)
+
     return creds
 
-# Construimos el servicio usando OAuth
+
+# Inicializar servicio global de Drive
 credentials = get_credentials()
 drive_service = build("drive", "v3", credentials=credentials)
 
+
 def upload_file(file_name: str, file_data: bytes, mime_type: str):
     """Subir archivo a Google Drive y devolver URL pública"""
+    if not FOLDER_ID:
+        raise Exception("No se encontró la variable FOLDER_ID en el .env")
+
     file_metadata = {"name": file_name, "parents": [FOLDER_ID]}
     media = MediaIoBaseUpload(io.BytesIO(file_data), mimetype=mime_type)
 
@@ -47,10 +55,11 @@ def upload_file(file_name: str, file_data: bytes, mime_type: str):
 
     file_id = file.get("id")
 
-    # Permisos públicos
+    # Dar permisos públicos
     drive_service.permissions().create(
         fileId=file_id,
         body={"role": "reader", "type": "anyone"}
     ).execute()
 
     return f"https://drive.google.com/uc?id={file_id}"
+

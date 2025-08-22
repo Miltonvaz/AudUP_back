@@ -1,7 +1,5 @@
-from datetime import datetime
 from src.app.transcription.domain.entities.models import CreateTranscriptionModel, TranscriptionResponse
 from src.app.transcription.domain.repository import TranscriptionRepository
-
 
 class CreateTranscription:
     def __init__(self, repo: TranscriptionRepository):
@@ -14,5 +12,6 @@ class CreateTranscription:
             idTranscription=result.idTranscription,
             idClass=result.idClass,
             title=result.title,
-            content=result.content
+            content=result.content,
+            urlFile=result.urlFile 
         )

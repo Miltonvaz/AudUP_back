@@ -2,7 +2,6 @@ from typing import Optional
 from src.app.transcription.domain.entities.models import CreateTranscriptionModel, TranscriptionResponse
 from src.app.transcription.domain.repository import TranscriptionRepository
 
-
 class UpdateTranscription:
     def __init__(self, repo: TranscriptionRepository):
         self.repo = repo
@@ -16,5 +15,6 @@ class UpdateTranscription:
             idTranscription=updated_transcription.idTranscription,
             idClass=updated_transcription.idClass,
             title=updated_transcription.title,
-            content=updated_transcription.content
+            content=updated_transcription.content,
+            urlFile=updated_transcription.urlFile 
         )
