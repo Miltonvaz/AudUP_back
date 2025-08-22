@@ -8,14 +8,14 @@ from src.shared.security.auth import Claims
 asignature_router = APIRouter()
 controllers = init_asignature_dependencies()
 
-@asignature_router.post("/asignature", status_code=201)
+@asignature_router.post("/asignature")
 def create_asignature(
     asignature: CreateAsignatureRequest,
     claims: Claims = Depends(jwt_middleware)  
 ):
     return controllers["create_asignature_controller"].execute(asignature, claims)
 
-@asignature_router.put("/asignature/{asignature_id}/background", status_code=200)
+@asignature_router.put("/asignature/{asignature_id}/background")
 async def update_background(
     asignature_id : int,
     file : UploadFile = File(...),
@@ -30,14 +30,14 @@ def update_asignature(
     claims: Claims = Depends(jwt_middleware)
 ):
     return controllers["update_asignature_controller"].execute(asignature_id,asignature,claims)
-@asignature_router.delete("/asignature/{asignature_id}",status_code=200)
+@asignature_router.delete("/asignature/{asignature_id}")
 def delete_asignature(
     asignature_id : int,
     claims: Claims = Depends(jwt_middleware)
 ):
     return controllers["delete_asignature_controller"].execute(claims,asignature_id)
 
-@asignature_router.post("/asignature/{asignature_id}/join", status_code=204)
+@asignature_router.post("/asignature/{asignature_id}/join")
 def join_asignature(
     asignature_id : int,
     claims : Claims = Depends(jwt_middleware)
@@ -50,3 +50,9 @@ def get_students(
     claims : Claims = Depends(jwt_middleware)
 ):
     return controllers["get_students_controller"].execute(claims,asignature_id)
+
+@asignature_router.get("/asignature",status_code=200)
+def get_asignatures(
+    claims: Claims = Depends(jwt_middleware)
+):
+    return controllers["get_asignatures_controller"].execute(claims)

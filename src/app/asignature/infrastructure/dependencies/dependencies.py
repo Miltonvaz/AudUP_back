@@ -11,6 +11,8 @@ from src.app.asignature.application.usecase.join_asignature import JoinAsignatur
 from src.app.asignature.infrastructure.controllers.join_asignature import JoinAsignatureController
 from src.app.asignature.application.usecase.get_students import GetStudents
 from src.app.asignature.infrastructure.controllers.get_students import GetStudentsController
+from src.app.asignature.application.usecase.get_asignatures import GetAsignatures
+from src.app.asignature.infrastructure.controllers.get_asignatures import GetAsignaturesController
 
 
 
@@ -25,6 +27,7 @@ def init_asignature_dependencies():
     delete_asignature_usecase = DeleteAsignature(repo)
     join_asignature_usecase   = JoinAsignature(repo)
     get_students_usecase      = GetStudents(repo)
+    get_asignatures_usecase   = GetAsignatures(repo)
     
     #Controllers
     create_asignature_controller = CreateAsignatureController(create_asignature_usecase)
@@ -33,6 +36,7 @@ def init_asignature_dependencies():
     delete_asignature_controller = DeleteAsignatureController(delete_asignature_usecase)
     join_asignature_controller   = JoinAsignatureController(join_asignature_usecase)
     get_students_controller      = GetStudentsController(get_students_usecase)
+    get_asignatures_controller   = GetAsignaturesController(get_asignatures_usecase)
     
     return{
         "create_asignature_controller": create_asignature_controller,
@@ -40,7 +44,8 @@ def init_asignature_dependencies():
         "update_asignature_controller":update_asignature_controller,
         "delete_asignature_controller": delete_asignature_controller,
         "join_asignature_controller"  : join_asignature_controller,
-        "get_students_controller"     : get_students_controller
+        "get_students_controller"     : get_students_controller,
+        "get_asignatures_controller"  : get_asignatures_controller
     }
     
     
