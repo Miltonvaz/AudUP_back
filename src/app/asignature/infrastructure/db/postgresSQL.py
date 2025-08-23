@@ -183,6 +183,7 @@ class PostgreSQLRepository(AsignatureRepository):
 
             return [
                 UserResponse(
+                    user_id = student.idUser,
                     firstName=student.firstName,
                     secondName=student.secondName,
                     paternalLastName=student.paternalLastName,
@@ -201,6 +202,7 @@ class PostgreSQLRepository(AsignatureRepository):
         try:
             asignatures = (
                 self.connection.query(
+                    Asignature.idAsignature,
                     Asignature.name,
                     Asignature.description,
                     Asignature.urlBackground,
@@ -215,6 +217,7 @@ class PostgreSQLRepository(AsignatureRepository):
 
             return [
                 TeacherAsignatureResponse(
+                    asignature_id = row.idAsignature,
                     asignatureName=row.name,
                     description=row.description,
                     urlBackground=row.urlBackground,

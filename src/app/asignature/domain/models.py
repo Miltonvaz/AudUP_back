@@ -31,6 +31,7 @@ class CreateAsignatureResponse(BaseModel):
     description: str
 
 class UserResponse(BaseModel):
+    user_id : int
     firstName: str
     secondName: str
     paternalLastName: str
@@ -38,6 +39,7 @@ class UserResponse(BaseModel):
     email: str
  
 class TeacherAsignatureResponse(BaseModel):
+    asignature_id : int
     asignatureName: str
     description: str
     urlBackground: Optional[str] = None
