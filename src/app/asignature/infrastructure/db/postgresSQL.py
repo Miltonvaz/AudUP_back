@@ -156,17 +156,16 @@ class PostgreSQLRepository(AsignatureRepository):
 
             return "created"
 
-
         except Exception as e:
             self.connection.rollback()
             raise e
 
-    def get_students(self, user_id : int,asignature_id: int) -> List[UserResponse]:
+    def get_students(self, user_id: int, asignature_id: int) -> List[UserResponse]:
         try:
             # Verificar que la asignatura pertenece al profesor
             asignature = (
                 self.connection.query(Asignature)
-                .filter_by(idAsignature=asignature_id, idTeacher=user_id)  
+                .filter_by(idAsignature=asignature_id, idTeacher=user_id)
                 .one()
             )
 
@@ -183,7 +182,7 @@ class PostgreSQLRepository(AsignatureRepository):
 
             return [
                 UserResponse(
-                    user_id = student.idUser,
+                    user_id=student.idUser,
                     firstName=student.firstName,
                     secondName=student.secondName,
                     paternalLastName=student.paternalLastName,
@@ -197,7 +196,7 @@ class PostgreSQLRepository(AsignatureRepository):
             raise Exception("This subject does not belong to this teacher")
         except Exception as e:
             raise e
-        
+
     def get_asignatures(self, user_id: int) -> List[TeacherAsignatureResponse]:
         try:
             asignatures = (
@@ -217,7 +216,7 @@ class PostgreSQLRepository(AsignatureRepository):
 
             return [
                 TeacherAsignatureResponse(
-                    asignature_id = row.idAsignature,
+                    asignature_id=row.idAsignature,
                     asignatureName=row.name,
                     description=row.description,
                     urlBackground=row.urlBackground,
@@ -230,7 +229,8 @@ class PostgreSQLRepository(AsignatureRepository):
 
         except Exception as e:
             raise e
-    def student_withdraw_from_class(self, user_id: int, asignature_id: int)-> str:
+
+    def student_withdraw_from_class(self, user_id: int, asignature_id: int) -> str:
         try:
             existing = (
                 self.connection.query(UserAsignature)
@@ -239,12 +239,33 @@ class PostgreSQLRepository(AsignatureRepository):
             )
 
             if not existing:
-                return "not_found"  
+                return "not_found"
 
             if not existing.isActive:
-                return "already_inactive" 
+                return "already_inactive"
 
-            
+            existing.isActive = False
+            self.connection.commit()
+            return "withdrawn"
+
+        except Exception as e:
+            self.connection.rollback()
+            raise e
+
+    def teacher_drops_student_from_class(self,asignature_id, student_id) -> str:
+        try:
+            # Verificar si el estudiante ya ha sido ligado a una clase
+            existing = (
+                self.connection.query(UserAsignature)
+                .filter_by(idUser=student_id, idAsignature=asignature_id)
+                .first()
+            )
+
+            if not existing:
+                return "not_found"
+
+            if not existing.isActive:
+                return "already_inactive"
             existing.isActive = False
             self.connection.commit()
             return "withdrawn"

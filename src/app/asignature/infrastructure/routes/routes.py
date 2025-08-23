@@ -62,4 +62,12 @@ def student_withdraw_from_class(
     asignature_id: int,
     claims : Claims = Depends(jwt_middleware)
 ):
-    return controllers["student_withdraw_from_class"].execute(claims, asignature_id)
+    return controllers["student_withdraw_from_class_controller"].execute(claims, asignature_id)
+
+@asignature_router.put("/asignature/{asignature_id}/withdraw/{student_id}")
+def teacher_drops_student_from_class(
+    asignature_id = int,
+    student_id = int,
+    claims : Claims = Depends(jwt_middleware)
+):
+    return controllers["teacher_drops_student_from_class_controller"].execute(claims,asignature_id,student_id)

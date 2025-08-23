@@ -39,3 +39,6 @@ class AsignatureRepository(ABC):
     @abstractmethod
     def student_withdraw_from_class(self,user_id: int, asignature :int)->str:
         pass
+    @abstractmethod
+    def teacher_drops_student_from_class(self, asignature_id: int, student_id : int)->str:
+        pass
