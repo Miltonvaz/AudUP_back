@@ -62,3 +62,20 @@ class PosgreSQLRepository(ClassRepository):
         except Exception as e:
             raise e
         
+    def delete(self, asignature_id: int, class_id: int)-> bool:
+        try:
+            class_ = self.connection.query(Class).filter(
+                Class.idAsignature == asignature_id,
+                Class.idClass == class_id
+            ).first()
+            
+            if not class_:
+                return False
+            
+            self.connection.delete(class_)
+            self.connection.commit()
+            return True
+        
+        except Exception as e:
+            raise e
+        

@@ -24,5 +24,13 @@ def edit_class(
 ):
     return controllers["edit_class_controller"].execute(claims,asignature_id,class_id,class_)
 
+@class_router.delete("/asignature/{asignature_id}/class/{class_id}")
+def delete_class(
+    asignature_id = int,
+    class_id = int,
+    claims : Claims = Depends(jwt_middleware)
+):
+    return controllers["delete_class_controller"].execute(claims,asignature_id,class_id)
+
 
 

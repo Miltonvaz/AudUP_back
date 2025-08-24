@@ -13,3 +13,6 @@ class ClassRepository(ABC):
     @abstractmethod
     def edit_class(self,asignature_id: int,class_id : int, class_ : CreateClassRequest)->None:
         pass
+    @abstractmethod
+    def delete(self, asignature_id: int,class_id : int)->bool:
+        pass
