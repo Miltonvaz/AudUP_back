@@ -1,5 +1,6 @@
 from abc import abstractmethod, ABC
 from src.app.classes.domain.models import CreateClassRequest, CreateClassResponse
+from typing import List
 
 
 class ClassRepository(ABC):
@@ -15,4 +16,7 @@ class ClassRepository(ABC):
         pass
     @abstractmethod
     def delete(self, asignature_id: int,class_id : int)->bool:
+        pass
+    @abstractmethod
+    def get_classes(self, asignature_id : int) -> List[CreateClassResponse]:
         pass
