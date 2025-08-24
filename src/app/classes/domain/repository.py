@@ -10,3 +10,6 @@ class ClassRepository(ABC):
     @abstractmethod
     def existing_class(self, asignature_id: int, class_ : CreateClassResponse )-> bool:
         pass
+    @abstractmethod
+    def edit_class(self,asignature_id: int,class_id : int, class_ : CreateClassRequest)->None:
+        pass
