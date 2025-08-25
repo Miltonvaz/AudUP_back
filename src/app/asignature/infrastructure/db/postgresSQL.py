@@ -32,11 +32,12 @@ class PostgreSQLRepository(AsignatureRepository):
             self.connection.rollback()
             raise e
 
-    def is_name_taken(self, name: str) -> bool:
+    def is_name_taken(self,user_id: int, name: str) -> bool:
         try:
             return (
                 self.connection.query(Asignature)
-                .filter(Asignature.name == name)
+                .filter(Asignature.name == name,
+                        Asignature.idTeacher == user_id)
                 .first()
                 is not None
             )

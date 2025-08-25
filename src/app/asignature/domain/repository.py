@@ -9,7 +9,7 @@ class AsignatureRepository(ABC):
         pass
 
     @abstractmethod
-    def is_name_taken(self, name: str) -> bool:
+    def is_name_taken(self, user_id: int, name: str) -> bool:
         pass
 
     @abstractmethod
