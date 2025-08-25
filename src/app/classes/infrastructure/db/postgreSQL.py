@@ -106,3 +106,28 @@ class PosgreSQLRepository(ClassRepository):
 
         except Exception as e:
             raise e
+
+    def get_class(self, asignature_id: int, class_id: int) -> CreateClassResponse:
+        try:
+            existing_asignature = self.connection.query(Asignature).filter_by(
+                idAsignature=asignature_id
+            ).one()
+
+            if not existing_asignature:
+                raise Exception("There is no such asignature")
+
+            class_ = self.connection.query(Class).filter(
+                Class.idAsignature == asignature_id,
+                Class.idClass == class_id
+            ).first()
+
+            if not class_:
+                raise Exception("Class not found")
+            return CreateClassResponse(
+                class_id=class_.idClass,
+                name=class_.name,
+                date=class_.date
+            )
+
+        except Exception as e:
+            raise e

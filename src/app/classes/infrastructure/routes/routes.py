@@ -38,5 +38,13 @@ def get_classes(
     claims: Claims = Depends(jwt_middleware)
 ):
     return controllers["get_classes_controller"].execute(claims, asignature_id)
+
+@class_router.get("/asignature/{asignature_id}/classes/{class_id}")
+def get_class(
+    asignature_id : int,
+    class_id : int,
+    claims : Claims = Depends(jwt_middleware)
+):
+    return controllers["get_class_controller"].execute(claims, asignature_id,class_id)
     
 

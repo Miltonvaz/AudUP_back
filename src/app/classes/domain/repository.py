@@ -20,3 +20,6 @@ class ClassRepository(ABC):
     @abstractmethod
     def get_classes(self, asignature_id : int) -> List[CreateClassResponse]:
         pass
+    @abstractmethod
+    def get_class(self, asignature_id : int, class_id: int)->CreateClassResponse:
+        pass
