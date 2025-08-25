@@ -4,6 +4,7 @@ from src.app.classes.domain.models import CreateClassRequest, CreateClassRespons
 from src.shared.db.orm_models import Class, Asignature
 from datetime import datetime
 from typing import List
+from sqlalchemy.orm.exc import NoResultFound
 
 
 class PosgreSQLRepository(ClassRepository):
@@ -81,14 +82,12 @@ class PosgreSQLRepository(ClassRepository):
             raise e
 
     def get_classes(self, asignature_id: int) -> List[CreateClassResponse]:
-        try:
-            existing_asignature = self.connection.query(Asignature).filter_by(
+        
+            self.connection.query(Asignature).filter_by(
                 idAsignature=asignature_id
             ).one()
 
-            if not existing_asignature:
-                raise Exception("There is no such asignature")
-
+           
             classes = (
                 self.connection.query(Class).filter(
                     Class.idAsignature == asignature_id
@@ -103,18 +102,13 @@ class PosgreSQLRepository(ClassRepository):
                 )
                 for row in classes
             ]
-
-        except Exception as e:
-            raise e
-
+    
     def get_class(self, asignature_id: int, class_id: int) -> CreateClassResponse:
-        try:
-            existing_asignature = self.connection.query(Asignature).filter_by(
+            self.connection.query(Asignature).filter_by(
                 idAsignature=asignature_id
             ).one()
 
-            if not existing_asignature:
-                raise Exception("There is no such asignature")
+            
 
             class_ = self.connection.query(Class).filter(
                 Class.idAsignature == asignature_id,
@@ -129,5 +123,4 @@ class PosgreSQLRepository(ClassRepository):
                 date=class_.date
             )
 
-        except Exception as e:
-            raise e
+        

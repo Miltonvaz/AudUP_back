@@ -1,6 +1,7 @@
 from src.app.classes.domain.repository import ClassRepository
 from src.app.classes.domain.models import CreateClassResponse
 from typing import List
+from sqlalchemy.orm.exc import NoResultFound
 
 
 class GetClasses():
@@ -9,7 +10,8 @@ class GetClasses():
     
     
     def execute(self, asignature_id: int)->List[CreateClassResponse]:
-        classes = self.repo.get_classes(asignature_id)
-        
-        return classes
-        
+        try:
+            return self.repo.get_classes(asignature_id)
+        except NoResultFound as e:
+            # lo relanzamos para que lo atrape el controlador
+            raise e

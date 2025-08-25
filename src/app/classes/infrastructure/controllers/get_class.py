@@ -1,6 +1,7 @@
 from src.app.classes.application.usecase.get_class import GetClass
 from src.shared.security.auth import Claims
 from fastapi import HTTPException
+from sqlalchemy.orm.exc import NoResultFound
 
 
 class GetClassController():
@@ -16,6 +17,8 @@ class GetClassController():
 
         try:
                 return self.usecase.execute(asignature_id, class_id)
+        except NoResultFound as nf:
+            raise HTTPException(status_code=404, detail=str(nf))
         
         except Exception as e:
             raise e
