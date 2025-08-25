@@ -17,6 +17,8 @@ from src.app.asignature.application.usecase.student_withdraw_from_class import S
 from src.app.asignature.infrastructure.controllers.student_withdraw_from_class import StudentWithdrawFromClassController
 from src.app.asignature.application.usecase.teacher_drops_student_from_class import TeacherDropsStudentFromClass
 from src.app.asignature.infrastructure.controllers.teacher_drops_student_from_class import TeacherDropsStudentFromClassController
+from src.app.asignature.application.usecase.get_student_asignatures import GetStudentAsignatures
+from src.app.asignature.infrastructure.controllers.get_student_asignatures import GetStudentAsignaturesController
 
 
 
@@ -34,6 +36,7 @@ def init_asignature_dependencies():
     get_asignatures_usecase   = GetAsignatures(repo)
     student_withdraw_From_class_usecase = StudentWithdrawFromClass(repo)
     teacher_drops_student_from_class_usecase = TeacherDropsStudentFromClass(repo)
+    get_student_asignatures_usecase = GetStudentAsignatures(repo)
     
     
     #Controllers
@@ -46,6 +49,7 @@ def init_asignature_dependencies():
     get_asignatures_controller   = GetAsignaturesController(get_asignatures_usecase)
     student_withdraw_from_class_controller = StudentWithdrawFromClassController(student_withdraw_From_class_usecase)
     teacher_drops_student_from_class_controller = TeacherDropsStudentFromClassController(teacher_drops_student_from_class_usecase)
+    get_student_asignatures_controller  = GetStudentAsignaturesController(get_student_asignatures_usecase)
     
     
     return{
@@ -55,9 +59,10 @@ def init_asignature_dependencies():
         "delete_asignature_controller": delete_asignature_controller,
         "join_asignature_controller"  : join_asignature_controller,
         "get_students_controller"     : get_students_controller,
-        "get_asignatures_controller"  : get_asignatures_controller,
+        "get_teacher_asignatures_controller"  : get_asignatures_controller,
         "student_withdraw_from_class_controller" : student_withdraw_from_class_controller,
-        "teacher_drops_student_from_class_controller" : teacher_drops_student_from_class_controller
+        "teacher_drops_student_from_class_controller" : teacher_drops_student_from_class_controller,
+        "get_student_asignatures_controller" : get_student_asignatures_controller
     }
     
     

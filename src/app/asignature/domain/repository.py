@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from src.app.asignature.domain.models import CreateAsignatureRequest, CreateAsignatureResponse, UserResponse
+from src.app.asignature.domain.models import CreateAsignatureRequest, CreateAsignatureResponse, UserResponse, TeacherAsignatureResponse
 from typing import List
 
 
@@ -34,11 +34,14 @@ class AsignatureRepository(ABC):
     def get_students(self,user_id: int, asignature_id: int)->List[UserResponse]:
         pass
     @abstractmethod
-    def get_asignatures(self, user_id: int)->List[CreateAsignatureResponse]:
+    def get_asignatures(self, user_id: int)->List[TeacherAsignatureResponse]:
         pass
     @abstractmethod
     def student_withdraw_from_class(self,user_id: int, asignature :int)->str:
         pass
     @abstractmethod
     def teacher_drops_student_from_class(self, asignature_id: int, student_id : int)->str:
+        pass
+    @abstractmethod
+    def get_student_asignatures(self, user_id : int)->List[TeacherAsignatureResponse]:
         pass

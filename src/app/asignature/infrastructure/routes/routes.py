@@ -55,7 +55,10 @@ def get_students(
 def get_asignatures(
     claims: Claims = Depends(jwt_middleware)
 ):
-    return controllers["get_asignatures_controller"].execute(claims)
+    if claims.role == "teacher":
+        return controllers["get_teacher_asignatures_controller"].execute(claims)
+    elif claims.role == "student":
+        return controllers["get_student_asignatures_controller"].execute(claims)
 
 @asignature_router.put("/asignature/{asignature_id}/withdraw")
 def student_withdraw_from_class(

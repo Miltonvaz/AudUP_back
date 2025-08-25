@@ -273,3 +273,38 @@ class PostgreSQLRepository(AsignatureRepository):
         except Exception as e:
             self.connection.rollback()
             raise e
+
+    def get_student_asignatures(self, user_id: int) -> List[TeacherAsignatureResponse]:
+        try:
+            asignatures = (
+                self.connection.query(
+                    Asignature.idAsignature,
+                    Asignature.name,
+                    Asignature.description,
+                    Asignature.urlBackground,
+                    Asignature.linkCode,
+                    User.firstName,
+                    User.paternalLastName
+                )
+                
+                .join(UserAsignature, UserAsignature.idAsignature == Asignature.idAsignature)
+                .join(User, Asignature.idTeacher == User.idUser)
+                .filter(UserAsignature.idUser == user_id, UserAsignature.isActive == True
+                ).all()
+            )
+
+            return [
+                TeacherAsignatureResponse(
+                    asignature_id=row.idAsignature,
+                    asignatureName=row.name,
+                    description=row.description,
+                    urlBackground=row.urlBackground,
+                    linkCode=row.linkCode,
+                    firstName=row.firstName,               # nombre del maestro
+                    paternalLastName=row.paternalLastName  # apellido del maestro
+                )
+                for row in asignatures
+            ]
+
+        except Exception as e:
+            raise e
