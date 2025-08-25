@@ -82,45 +82,38 @@ class PosgreSQLRepository(ClassRepository):
             raise e
 
     def get_classes(self, asignature_id: int) -> List[CreateClassResponse]:
-        
-            self.connection.query(Asignature).filter_by(
-                idAsignature=asignature_id
-            ).one()
 
-           
-            classes = (
-                self.connection.query(Class).filter(
-                    Class.idAsignature == asignature_id
-                ).all()
+        self.connection.query(Asignature).filter_by(
+            idAsignature=asignature_id
+        ).one()
+
+        classes = (
+            self.connection.query(Class).filter(
+                Class.idAsignature == asignature_id
+            ).all()
+        )
+
+        return [
+            CreateClassResponse(
+                class_id=row.idClass,
+                name=row.name,
+                date=row.date
             )
+            for row in classes
+        ]
 
-            return [
-                CreateClassResponse(
-                    class_id=row.idClass,
-                    name=row.name,
-                    date=row.date
-                )
-                for row in classes
-            ]
-    
     def get_class(self, asignature_id: int, class_id: int) -> CreateClassResponse:
-            self.connection.query(Asignature).filter_by(
-                idAsignature=asignature_id
-            ).one()
+        self.connection.query(Asignature).filter_by(
+            idAsignature=asignature_id
+        ).one()
 
-            
+        class_ = self.connection.query(Class).filter(
+            Class.idAsignature == asignature_id,
+            Class.idClass == class_id
+        ).one()
 
-            class_ = self.connection.query(Class).filter(
-                Class.idAsignature == asignature_id,
-                Class.idClass == class_id
-            ).first()
-
-            if not class_:
-                raise Exception("Class not found")
-            return CreateClassResponse(
-                class_id=class_.idClass,
-                name=class_.name,
-                date=class_.date
-            )
-
-        
+        return CreateClassResponse(
+            class_id=class_.idClass,
+            name=class_.name,
+            date=class_.date
+        )
