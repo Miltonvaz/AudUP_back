@@ -9,9 +9,16 @@ class GetUserByIdController:
 
     def execute(self, user_id: int) -> Optional[CreateUserResponse]:
         try:
+            if not isinstance(user_id, int) or user_id <= 0:
+                raise HTTPException(status_code=400, detail="ID de usuario inválido")
+
             result = self.usecase.execute(user_id)
             if result is None:
-                raise HTTPException(status_code=404, detail="User not found")
+                raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
             return result
+
+        except HTTPException as he:
+            raise he
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")

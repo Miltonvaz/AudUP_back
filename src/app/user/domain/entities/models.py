@@ -1,12 +1,10 @@
-from pydantic import BaseModel, field_validator, ValidationInfo, EmailStr
+from pydantic import BaseModel, Field, field_validator, ValidationInfo, EmailStr
 from typing import Optional
 from enum import Enum
-
 
 class UserRole(str, Enum):
     student = "student"
     teacher = "teacher"
-
 
 class CreateUserModel(BaseModel):
     idRol: UserRole
@@ -16,6 +14,7 @@ class CreateUserModel(BaseModel):
     maternalLastName: Optional[str] = None
     email: EmailStr
     passwordHash: str
+    urlProfile: Optional[str] = None 
 
     @field_validator('firstName')
     def first_name_must_not_be_empty(cls, value, info: ValidationInfo):
@@ -34,7 +33,12 @@ class CreateUserModel(BaseModel):
         if not value.strip():
             raise ValueError("Password cannot be empty")
         return value
-
+    
+    @field_validator('email')
+    def email_must_be_upchiapas(cls, value, info: ValidationInfo):
+        if not value.endswith(".upchiapas.edu.mx"):
+            raise ValueError("Email must end with .upchiapas.edu.mx")
+        return value
 
 class CreateUserResponse(BaseModel):
     idUser: int
@@ -44,4 +48,5 @@ class CreateUserResponse(BaseModel):
     paternalLastName: str
     maternalLastName: Optional[str] = None
     email: EmailStr
+    urlProfile: Optional[str] = None  # agregado
     createdAt: str

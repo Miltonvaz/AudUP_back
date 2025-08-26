@@ -20,5 +20,6 @@ class CreateUser:
             paternalLastName=result.paternalLastName,
             maternalLastName=result.maternalLastName,
             email=result.email,
-            createdAt=str(result.created_at) if result.created_at else datetime.utcnow().isoformat()
+            urlProfile=result.urlProfile,
+            createdAt=str(result.createdAt) if result.createdAt else datetime.utcnow().isoformat()
         )
