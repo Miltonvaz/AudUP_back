@@ -44,15 +44,13 @@ class Advertisement(Base):
     __tablename__ = "Advertisement"
 
     idAdvertisement = Column(BigInteger, primary_key=True, autoincrement=True)
+    idAsignature = Column(BigInteger, ForeignKey("Asignature.idAsignature", ondelete="CASCADE"), nullable=False)  # AGREGAR ESTA LÍNEA
     name = Column(String(255), nullable=False)
     description = Column(String(500))
     date = Column(Date, server_default=text("CURRENT_DATE"))
 
-    asignatures = relationship(
-        "Asignature", 
-        back_populates="advertisement",
-        cascade="all, delete-orphan"
-    )
+    # Cambié la relación - Un advertisement pertenece a una asignatura
+    asignature = relationship("Asignature", back_populates="advertisements")
 
 # Tabla Asignature
 class Asignature(Base):
@@ -60,7 +58,6 @@ class Asignature(Base):
 
     idAsignature = Column(BigInteger, primary_key=True, autoincrement=True)
     idTeacher = Column(BigInteger, ForeignKey("User.idUser"), nullable=False)
-    idAdvertisement = Column(BigInteger, ForeignKey("Advertisement.idAdvertisement", ondelete="SET NULL"))
     name = Column(String(255), nullable=False)
     urlBackground = Column(Text)
     description = Column(String(500))
@@ -69,7 +66,7 @@ class Asignature(Base):
 
     # Relaciones
     teacher = relationship("User", back_populates="asignatures", foreign_keys=[idTeacher])
-    advertisement = relationship("Advertisement", back_populates="asignatures")
+    advertisements = relationship("Advertisement", back_populates="asignature", cascade="all, delete-orphan")
     user_asignatures = relationship(
         "UserAsignature", 
         back_populates="asignature", 
