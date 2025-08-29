@@ -1,6 +1,6 @@
 from typing import Optional
-from domain.models import Advertisement, UpdateAdvertisementRequest
-from domain.repository import AdvertisementRepository
+from src.app.advertisement.domain.models import Advertisement, UpdateAdvertisementRequest
+from src.app.advertisement.domain.repository import AdvertisementRepository
 
 
 class UpdateAdvertisement:

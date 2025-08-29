@@ -1,4 +1,4 @@
-from domain.repository import MaterialRepository
+from src.app.material.domain.repository import MaterialRepository
 
 class DeleteMaterial:
     """

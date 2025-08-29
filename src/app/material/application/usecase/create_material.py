@@ -1,5 +1,5 @@
-from domain.models import Material, CreateMaterialRequest
-from domain.repository import MaterialRepository
+from src.app.material.domain.models import Material, CreateMaterialRequest
+from src.app.material.domain.repository import MaterialRepository
 
 class CreateMaterial:
     """

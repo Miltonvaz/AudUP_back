@@ -1,6 +1,6 @@
 from typing import Optional
-from domain.repository import MaterialRepository
-from domain.models import Material
+from src.app.material.domain.repository import MaterialRepository
+from src.app.material.domain.models import Material
 
 class GetMaterialById:
     """

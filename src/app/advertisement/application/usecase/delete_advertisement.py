@@ -1,4 +1,4 @@
-from domain.repository import AdvertisementRepository
+from src.app.advertisement.domain.repository import AdvertisementRepository
 
 
 class DeleteAdvertisement:

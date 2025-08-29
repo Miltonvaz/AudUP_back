@@ -1,5 +1,5 @@
-from domain.models import Advertisement, CreateAdvertisementRequest
-from domain.repository import AdvertisementRepository
+from src.app.advertisement.domain.models import Advertisement, CreateAdvertisementRequest
+from src.app.advertisement.domain.repository import AdvertisementRepository
 
 
 class CreateAdvertisement:

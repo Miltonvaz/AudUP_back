@@ -1,7 +1,6 @@
 from typing import Optional
-from domain.models import Advertisement
-from domain.repository import AdvertisementRepository
-
+from src.app.advertisement.domain.models import Advertisement
+from src.app.advertisement.domain.repository import AdvertisementRepository
 
 class GetAdvertisementById:
     def __init__(self, repo: AdvertisementRepository):

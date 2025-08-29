@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 from typing import List
-from src.app.advertisement.application.usecase.get_advertisements import GetAdvertisements
+from src.app.advertisement.application.usecase.get_advertisement import GetAdvertisements
 from src.app.advertisement.domain.models import AdvertisementResponse
 from src.app.advertisement.domain.repository import AdvertisementRepository
 from src.shared.security.auth import Claims
